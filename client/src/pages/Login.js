@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+const API_BASE_URL = "http://34.129.60.74";
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ function Login() {
 
         try {
             console.log('Attempting login with:', { email: formData.email });
-            const response = await axios.post('http://localhost:5000/api/users/login', formData, {
+            const response = await axios.post(`${API_BASE_URL}/api/users/login`, formData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

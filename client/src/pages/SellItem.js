@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+const API_BASE_URL = "http://34.129.60.74";
 
 const SellItem = () => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const SellItem = () => {
       formDataToSend.append('category', formData.category);
       formDataToSend.append('condition', formData.condition);
       formDataToSend.append('images', formData.image);
-      formDataToSend.append('seller', currentUser.id);
+      formDataToSend.append('seller', currentUser._id);
       formDataToSend.append('location', formData.location);
 
       console.log('Sending data:', {
@@ -71,7 +72,7 @@ const SellItem = () => {
         location: formData.location
       });
 
-      const response = await axios.post('http://localhost:5000/api/items', formDataToSend, {
+      const response = await axios.post(`${API_BASE_URL}/api/items`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('token')}`

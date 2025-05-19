@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const SERVER_URL = 'http://localhost:5000';
+const API_BASE_URL = "http://34.129.60.74";
 
 function Profile() {
     const { currentUser } = useAuth();
@@ -30,7 +30,7 @@ function Profile() {
         try {
             setLoading(true);
             setError('');
-            const response = await axios.get(`${SERVER_URL}/api/items?seller=${currentUser.id}`, {
+            const response = await axios.get(`${API_BASE_URL}/api/items?seller=${currentUser.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -45,22 +45,21 @@ function Profile() {
 
     const fetchLikedItems = async () => {
         try {
-            const response = await axios.get(`${SERVER_URL}/api/items?likedBy=${currentUser.id}`, {
+            const response = await axios.get(`${API_BASE_URL}/api/items?likedBy=${currentUser.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
             setLikedItems(response.data);
         } catch (err) {
-            // 可以选择性地显示错误
+            // optional error handling
         }
     };
 
-    // 状态切换按钮逻辑
     const handleStatusChange = async (itemId, newStatus) => {
         setStatusLoading(itemId + newStatus);
         try {
-            await axios.patch(`${SERVER_URL}/api/items/${itemId}/status`, { status: newStatus }, {
+            await axios.patch(`${API_BASE_URL}/api/items/${itemId}/status`, { status: newStatus }, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -112,11 +111,7 @@ function Profile() {
                 );
             case 'Sold':
                 return (
-                    <Button
-                        variant="success"
-                        size="sm"
-                        disabled
-                    >
+                    <Button variant="success" size="sm" disabled>
                         Transaction Completed
                     </Button>
                 );
@@ -160,11 +155,10 @@ function Profile() {
         );
     }
 
-    // 头像处理
     const avatarUrl = currentUser.profileImage
         ? (currentUser.profileImage.startsWith('http')
             ? currentUser.profileImage
-            : `${SERVER_URL}${currentUser.profileImage}`)
+            : `${API_BASE_URL}${currentUser.profileImage}`)
         : 'https://randomuser.me/api/portraits/men/32.jpg';
 
     return (
@@ -207,7 +201,7 @@ function Profile() {
                                                 {item.images && item.images.length > 0 && item.images[0] && (
                                                     <Card.Img
                                                         variant="top"
-                                                        src={`http://localhost:5000/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
+                                                        src={`${API_BASE_URL}/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
                                                         alt={item.title}
                                                         style={{ height: '200px', objectFit: 'cover' }}
                                                     />
@@ -218,7 +212,7 @@ function Profile() {
                                                         <strong>Price:</strong> ${item.price}<br />
                                                         <strong>Status:</strong> <Badge bg={
                                                             item.status === 'Available' ? 'success' :
-                                                            item.status === 'Pending' ? 'warning' : 'secondary'
+                                                                item.status === 'Pending' ? 'warning' : 'secondary'
                                                         }>{item.status}</Badge>
                                                     </Card.Text>
                                                     <div className="mb-2">
@@ -246,7 +240,7 @@ function Profile() {
                                         <ListGroup.Item key={item._id} className="d-flex align-items-center">
                                             {item.images && item.images.length > 0 && item.images[0] && (
                                                 <img
-                                                    src={`http://localhost:5000/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
+                                                    src={`${API_BASE_URL}/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
                                                     alt={item.title}
                                                     width={60}
                                                     height={60}
@@ -272,4 +266,4 @@ function Profile() {
     );
 }
 
-export default Profile; 
+export default Profile;

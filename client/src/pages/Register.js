@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+const API_BASE_URL = "http://34.129.60.74";
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ function Register() {
 
         try {
             const { confirmPassword, ...registerData } = formData;
-            const response = await axios.post('http://localhost:5000/api/users/register', registerData);
+            const response = await axios.post(`${API_BASE_URL}/api/users/register`, registerData);
             login(response.data.token, response.data.user);
             navigate('/');
         } catch (err) {

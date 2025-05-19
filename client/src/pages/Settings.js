@@ -3,6 +3,7 @@ import { Container, Card, Row, Col, Button, Form, Modal, ListGroup } from 'react
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+const API_BASE_URL = "http://34.129.60.74";
 
 const Settings = () => {
   const { currentUser, login } = useAuth();
@@ -80,7 +81,7 @@ const Settings = () => {
         formData.append('avatar', avatarFile);
         console.log('avatarFile:', avatarFile);
       }
-      const response = await axios.put('http://localhost:5000/api/users/profile', formData, {
+      const response = await axios.put(`${API_BASE_URL}/api/users/profile`, formData, {
         headers: {
           'Authorization': 'Bearer ' + token
         }

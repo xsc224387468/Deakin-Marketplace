@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+const API_BASE_URL = "http://34.129.60.74";
 function CreateListing() {
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -45,7 +46,7 @@ function CreateListing() {
         formDataToSend.append('image', formData.image);
       }
 
-      await axios.post('http://localhost:5000/api/items', formDataToSend, {
+      await axios.post(`${API_BASE_URL}/api/items`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

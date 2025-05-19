@@ -3,6 +3,7 @@ import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+const API_BASE_URL = "http://34.129.60.74";
 
 function Sell() {
     const { currentUser } = useAuth();
@@ -57,7 +58,7 @@ function Sell() {
                 formDataToSend.append('images', image);
             });
 
-            const response = await axios.post('http://localhost:5000/api/items', formDataToSend, {
+            const response = await axios.post(`${API_BASE_URL}/api/items`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`

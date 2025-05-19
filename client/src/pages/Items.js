@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+const API_BASE_URL = "http://34.129.60.74";
 
 function Items() {
   const [items, setItems] = useState([]);
@@ -23,7 +24,7 @@ function Items() {
           if (value) queryParams.append(key, value);
         });
 
-        const response = await axios.get(`http://localhost:5000/api/items?${queryParams.toString()}`);
+        const response = await axios.get(`${API_BASE_URL}/api/items?${queryParams.toString()}`);
         setItems(response.data);
         setLoading(false);
       } catch (err) {
@@ -135,7 +136,7 @@ function Items() {
                   <Card>
                     {item.images && item.images.length > 0 && item.images[0] && (
                       <img
-                        src={`http://localhost:5000/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
+                        src={`${API_BASE_URL}/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
                         alt={item.title}
                         style={{ height: '200px', width: '100%', objectFit: 'cover', marginBottom: 12 }}
                       />

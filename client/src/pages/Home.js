@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
+const API_BASE_URL = "http://34.129.60.74";
 
 const Home = () => {
   const [hotItems, setHotItems] = useState([]);
@@ -10,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     const fetchHotItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/items?status=Available');
+        const response = await axios.get(`${API_BASE_URL}/api/items?status=Available`);
         // 按 likes 降序排序，取前3个
         const sorted = response.data.sort((a, b) => (b.likes || 0) - (a.likes || 0));
         setHotItems(sorted.slice(0, 3));
@@ -58,7 +59,7 @@ const Home = () => {
               <Card className="hot-item-card text-center h-100">
                 <Card.Body>
                   {item.images && item.images.length > 0 && (
-                    <img src={`http://localhost:5000/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`} alt={item.title} style={{height:120, objectFit:'contain', marginBottom:12, maxWidth:'100%'}} />
+                    <img src={`${API_BASE_URL}/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`} alt={item.title} />
                   )}
                   <Card.Title>{item.title}</Card.Title>
                   <Card.Text>${item.price}</Card.Text>

@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, ListGroup, Form, Button, Badge, Alert, Spinn
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+const API_BASE_URL = "http://34.129.60.74";
 
 function Messages() {
     const { currentUser } = useAuth();
@@ -33,7 +34,7 @@ function Messages() {
             setError('');
             const userId = currentUser.id || currentUser._id;
             console.log('Fetching messages for user:', userId);
-            const response = await axios.get(`http://localhost:5000/api/messages/user/${userId}`, {
+            const response = await axios.get(`${API_BASE_URL}/api/messages/user/${userId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -71,7 +72,7 @@ function Messages() {
         try {
             setError('');
             const senderId = currentUser.id || currentUser._id;
-            const response = await axios.post('http://localhost:5000/api/messages', {
+            const response = await axios.post(`${API_BASE_URL}/api/messages`, {
                 itemId: selectedConversation.item._id,
                 senderId: senderId,
                 receiverId: selectedConversation.otherUser._id,
@@ -130,7 +131,7 @@ function Messages() {
         setSelectedConversation(conversation);
         try {
             const userId = currentUser.id || currentUser._id;
-            await axios.patch(`http://localhost:5000/api/messages/read/${userId}`, {}, {
+            await axios.patch(`${API_BASE_URL}/api/messages/read/${userId}`, {}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+const API_BASE_URL = "http://34.129.60.74";
 
 const ItemDetail = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const ItemDetail = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/items/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/items/${id}`);
         console.log('Item data:', response.data);
         setItem(response.data);
         setLikes(response.data.likes || 0);
@@ -52,7 +53,7 @@ const ItemDetail = () => {
         return;
       }
 
-      const response = await axios.post('http://localhost:5000/api/messages', {
+      const response = await axios.post(`${API_BASE_URL}/api/messages`, {
         itemId: item._id,
         senderId: currentUser._id,
         receiverId: item.seller._id,
@@ -73,7 +74,6 @@ const ItemDetail = () => {
       console.error('Error sending message:', err);
       if (err.response?.status === 401) {
         alert('Your session has expired. Please login again.');
-        // 可以在这里添加重定向到登录页面的逻辑
       } else {
         alert(err.response?.data?.message || 'Failed to send message');
       }
@@ -89,7 +89,7 @@ const ItemDetail = () => {
     if (liked) {
       // 取消点赞
       try {
-        const response = await axios.patch(`http://localhost:5000/api/items/${id}/unlike`, { 
+        const response = await axios.patch(`${API_BASE_URL}/api/items/${id}/unlike`, { 
           userId: currentUser.id 
         });
         setLikes(response.data.likes);
@@ -100,7 +100,7 @@ const ItemDetail = () => {
     } else {
       // 点赞
       try {
-        const response = await axios.patch(`http://localhost:5000/api/items/${id}/like`, { 
+        const response = await axios.patch(`${API_BASE_URL}/api/items/${id}/like`, { 
           userId: currentUser.id 
         });
         setLikes(response.data.likes);
@@ -125,7 +125,7 @@ const ItemDetail = () => {
         <Col md={6}>
           {item.images && item.images.length > 0 && item.images[0] && (
             <img
-              src={`http://localhost:5000/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
+              src={`${API_BASE_URL}/uploads/${item.images[0].replace(/^uploads[\\/]/, '')}`}
               alt={item.title}
               style={{ maxWidth: '100%', maxHeight: 300, objectFit: 'contain' }}
             />

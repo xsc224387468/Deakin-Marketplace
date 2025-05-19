@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
-
+const API_BASE_URL = "http://34.129.60.74";
 function Dashboard() {
   const { currentUser } = useAuth();
   const [listings, setListings] = useState([]);
@@ -12,7 +12,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/items/my-listings');
+        const response = await axios.get(`${API_BASE_URL}/api/items/my-listings`);
         setListings(response.data);
         setLoading(false);
       } catch (err) {

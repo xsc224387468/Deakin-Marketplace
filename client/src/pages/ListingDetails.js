@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Container, Row, Col, Card, Button, Form, Modal, Alert, Badge } from 'react-bootstrap';
 import axios from 'axios';
+const API_BASE_URL = "http://34.129.60.74";
 
 function ListingDetails() {
   const { id } = useParams();
@@ -20,9 +21,9 @@ function ListingDetails() {
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/items/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/items/${id}`);
         setListing(response.data);
-        const ratingsResponse = await axios.get(`http://localhost:5000/api/items/${id}/ratings`);
+        const ratingsResponse = await axios.get(`${API_BASE_URL}/api/items/${id}/ratings`);
         setRatings(ratingsResponse.data);
         setLoading(false);
       } catch (err) {
@@ -39,7 +40,7 @@ function ListingDetails() {
     if (!message.trim()) return;
 
     try {
-      await axios.post(`http://localhost:5000/api/items/${id}/messages`, {
+      await axios.post(`${API_BASE_URL}/api/items/${id}/messages`, {
         message: message.trim()
       });
       setMessage('');
@@ -50,7 +51,7 @@ function ListingDetails() {
 
   const handleStatusChange = async (newStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/items/${id}/status`, {
+      await axios.patch(`${API_BASE_URL}/api/items/${id}/status`, {
         status: newStatus,
         buyerId: currentUser._id
       });
@@ -62,7 +63,7 @@ function ListingDetails() {
 
   const handleRatingSubmit = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/items/${id}/rate`, {
+      await axios.post(`${API_BASE_URL}/api/items/${id}/rate`, {
         rating,
         comment: ratingComment,
         raterId: currentUser._id
@@ -71,7 +72,7 @@ function ListingDetails() {
       setRating(5);
       setRatingComment('');
       // Refresh ratings
-      const ratingsResponse = await axios.get(`http://localhost:5000/api/items/${id}/ratings`);
+      const ratingsResponse = await axios.get(`${API_BASE_URL}/api/items/${id}/ratings`);
       setRatings(ratingsResponse.data);
     } catch (err) {
       setError('Failed to submit rating');
@@ -103,7 +104,7 @@ function ListingDetails() {
               </div>
               {listing.images && listing.images.length > 0 && (
                 <img
-                  src={`http://localhost:5000/uploads/${listing.images[0]}`}
+                  src={`${API_BASE_URL}/uploads/${listing.images[0]}`}
                   alt={listing.title}
                   className="img-fluid mb-3"
                   style={{ maxHeight: '400px', objectFit: 'contain' }}
