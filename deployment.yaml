@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deakin-marketplace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deakin-marketplace
+  template:
+    metadata:
+      labels:
+        app: deakin-marketplace
+    spec:
+      containers:
+      - name: deakin-backend
+        image: gcr.io/YOUR_PROJECT_ID/deakin-marketplace:v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PORT
+          value: "5000"
+        - name: MONGODB_URI
+          value: "mongodb://s224387468:2xyT400NMy7R4M7p@ac-0357h62-shard-00-00.dzxhohq.mongodb.net:27017,ac-0357h62-shard-00-01.dzxhohq.mongodb.net:27017,ac-0357h62-shard-00-02.dzxhohq.mongodb.net:27017/?ssl=true&replicaSet=atlas-ekk022-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0" 
