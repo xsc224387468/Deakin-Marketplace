@@ -3,7 +3,7 @@ FROM node:18
 
 WORKDIR /app
 
-
+# Copy all back-end files
 COPY server/ ./server/
 COPY uploads/ ./uploads/
 COPY package*.json ./

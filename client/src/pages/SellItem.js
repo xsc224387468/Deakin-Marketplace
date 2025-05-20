@@ -45,7 +45,7 @@ const SellItem = () => {
     setError('');
     setLoading(true);
 
-    if (!currentUser || !currentUser._id) {
+    if (!currentUser || !(currentUser._id || currentUser.id)) {
       setError('User not authenticated');
       setLoading(false);
       return;
@@ -59,7 +59,7 @@ const SellItem = () => {
       formDataToSend.append('category', formData.category);
       formDataToSend.append('condition', formData.condition);
       formDataToSend.append('images', formData.image);
-      formDataToSend.append('seller', currentUser._id);
+      formDataToSend.append('seller', currentUser._id || currentUser.id);
       formDataToSend.append('location', formData.location);
 
       console.log('Sending data:', {
@@ -179,6 +179,7 @@ const SellItem = () => {
                       id="custom-file-input"
                       type="file"
                       accept="image/*"
+                      name="image"
                       onChange={handleImageChange}
                       required
                       style={{ display: 'none' }}

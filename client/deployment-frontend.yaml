@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: deakin-frontend
-          image: shichengxiang/deakin-frontend:v11
+          image: shichengxiang/deakin-frontend:v13
           ports:
             - containerPort: 80
 ---
