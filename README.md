@@ -79,19 +79,7 @@ deakin-marketplace/
 └── README.md             # Project documentation
 ```
 
-## Deployment
 
-The application is deployed using Firebase:
-
-1. Build the application:
-```bash
-npm run build
-```
-
-2. Deploy to Firebase:
-```bash
-firebase deploy
-```
 
 ## Contributing
 
@@ -109,4 +97,168 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Deakin University for providing access to Google Cloud Platform
 - Firebase team for their excellent documentation and tools
-- The React community for their amazing ecosystem 
+- The React community for their amazing ecosystem
+
+
+# Task 10.1P-10.2HD
+#  Deakin Marketplace
+
+**Deakin Marketplace** is a full-stack web application designed for Deakin University students to buy, sell, and browse second-hand items. It features a secure login system, image upload support, and Kubernetes-based deployment on Google Cloud.
+
+---
+
+##  Tech Stack
+
+| Layer     | Technology                             |
+|-----------|----------------------------------------|
+| Frontend  | React, React Router, Bootstrap         |
+| Backend   | Node.js, Express.js                    |
+| Database  | MongoDB Atlas                          |
+| DevOps    | Docker, Kubernetes, GCP (Cloud Shell)  |
+| Auth      | JWT (JSON Web Token)                   |
+
+---
+
+##  Project Structure
+
+```
+Deakin-Marketplace/
+├── client/                        # React frontend
+│   ├── public/
+│   └── src/
+├── server/                        # Express backend
+│   ├── routes/
+│   ├── models/
+│   └── index.js
+├── uploads/                       # Uploaded image directory
+├── Dockerfile-frontend           # Frontend image build config
+├── Dockerfile-backend            # Backend image build config
+├── deployment.yaml               # Backend Kubernetes Deployment
+├── service.yaml                  # Backend Service
+├── client/deployment-frontend.yaml  # Frontend Deployment
+├── client/service-frontend.yaml     # Frontend Service
+└── .env.production               # Production environment variables for frontend
+```
+
+---
+
+##  Features
+
+- User Registration & Login (JWT)
+- List and browse available second-hand items
+- Upload and display item images
+- Set and update item status: Available, Pending, Sold
+- Like and unlike items
+- Messaging system between users
+- Persistent `/uploads` image directory mounted via Kubernetes volume
+- Deployed frontend and backend on GKE using LoadBalancer
+
+---
+
+##  Build & Deploy Workflow
+
+### 1. Git Configuration (Cloud Shell)
+```bash
+git config --global user.name "xsc224387468"
+git config --global user.email "you@example.com"
+```
+
+---
+
+### 2. Build & Push Docker Images
+
+#### Backend
+```bash
+docker build -t shichengxiang/deakin-marketplace:v5 -f Dockerfile-backend .
+docker push shichengxiang/deakin-marketplace:v5
+```
+
+#### Frontend
+```bash
+cd client
+npm install
+npm run build
+cd ..
+docker build -t shichengxiang/deakin-frontend:v9 -f Dockerfile-frontend .
+docker push shichengxiang/deakin-frontend:v9
+```
+
+---
+
+### 3. Apply Kubernetes Configuration
+
+#### Backend
+```bash
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+```
+
+#### Frontend
+```bash
+kubectl apply -f client/deployment-frontend.yaml
+kubectl apply -f client/service-frontend.yaml
+```
+
+---
+
+### 4. Check LoadBalancer IPs
+```bash
+kubectl get service
+```
+Example:
+- Frontend: `http://34.129.26.216`
+- Backend API: `http://34.129.60.74/api`
+
+---
+
+##  Image Upload & Persistent Storage
+
+- Uploaded images are stored in the `/uploads` directory
+- Kubernetes mounts this directory using `emptyDir` or a `PersistentVolumeClaim`
+- The backend exposes it via:
+  ```js
+  app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+  ```
+
+---
+
+##  Functional Pages
+
+- `/register` & `/login`: JWT-based auth
+- `/sell`: Form with image upload
+- `/items`: Public marketplace
+- `/profile`: Lists user's items and liked items
+- `/messages`: Chat interface
+
+---
+
+##  Security Notes
+
+- MongoDB URI is loaded via `process.env.MONGODB_URI`
+- Frontend API endpoint is hardcoded:
+  ```js
+  const API_BASE_URL = "http://34.129.60.74";
+  ```
+
+---
+
+##  Push to GitHub from Cloud Shell
+
+```bash
+git init
+git remote add origin https://github.com/xsc224387468/Deakin-Marketplace.git
+git add .
+git commit -m "Initial commit from Cloud Shell"
+git push -u origin main
+```
+
+---
+
+##  Author
+- Shicheng Xiang
+- **Student ID**: s224387468
+- **GitHub**: [xsc224387468](https://github.com/xsc224387468)
+
+
+
+
